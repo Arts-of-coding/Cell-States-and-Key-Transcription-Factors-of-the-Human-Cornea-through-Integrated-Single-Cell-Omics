@@ -1,0 +1,21 @@
+rna_samples: AnanseScanpy_outs_meta/samplefile.tsv
+rna_tpms: AnanseScanpy_outs_meta/TPM.tsv
+rna_counts: AnanseScanpy_outs_meta/RNA_Counts.tsv
+atac_samples: AnanseScanpy_outs_meta/samplefile.tsv
+atac_counts: AnanseScanpy_outs_meta/Peak_Counts.tsv
+result_dir: AnanseScanpy_outs_meta/
+genome: hg38
+database: gimme.vertebrate.v5.0
+jaccard: 0.1
+edges: 500_000
+padj: 0.05
+plot_type: "png"
+get_orthologs: false
+contrasts:
+	- "anansesnake_LSC-1_hnESC"
+	- "anansesnake_LSC-2_hnESC"
+	- "anansesnake_LE_hnESC"
+	- "anansesnake_CE_hnESC"
+	- "anansesnake_Cj_hnESC"
+	- "anansesnake_qSK_hnESC"
+	- "anansesnake_CF_hnESC"
