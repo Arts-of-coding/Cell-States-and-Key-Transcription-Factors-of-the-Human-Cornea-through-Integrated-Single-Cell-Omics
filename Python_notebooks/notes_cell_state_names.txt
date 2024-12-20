@@ -1,0 +1,8 @@
+In earlier versions of the meta-atlas (see notebook scVI_meta-atlas_4_V4) we had different names of cell states. These were changed to these latest names.
+LSC -> LSC-1
+LESC -> LSC-1
+CSSC -> qSk
+MF -> MC
+CDH19+ -> nm-cSC
+
+We used this notebook because from a technical side the names do not matter as they change nothing downstream.
