@@ -1,0 +1,8 @@
+name: config_scRNA_10X.yaml
+data: {PATH_TO_DATASET}
+cellrangerpath: {PATH_TO_CELLRANGER}
+samples:
+# E.g. To do samples
+- SRR22314110
+- SRR22314111
+- SRR22314112

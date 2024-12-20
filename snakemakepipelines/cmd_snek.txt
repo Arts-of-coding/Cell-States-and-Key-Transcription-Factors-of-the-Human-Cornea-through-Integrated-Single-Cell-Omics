@@ -1,0 +1,3 @@
+nice -20 snakemake --snakefile Snakefile_scRNA_10X_fq_nc --configfile config_scRNA_10X.yaml -c 4 -j 4
+
+nice -20 snakemake --snakefile Snakefile_scRNA_10X_cellranger --configfile config_scRNA_10X.yaml -c 4 -j 6

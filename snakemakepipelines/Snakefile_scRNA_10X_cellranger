@@ -1,0 +1,91 @@
+configfile:
+    "config_scRNA_10X.yaml"
+
+#######################################################################################
+#rule all for the first block
+
+#fin2 = ['_1', '_2', '_3']
+
+#outfiles = []
+#for x in config["samples"]:
+ #   for y in fin2:
+  #      ## Here you pair f1 and f2. This is a very trivial way of doing it:
+   #     if y[1] in x:
+    #        outfiles.append(config["data"]+ 'fastq_snakemake/%s%s.fastq' % (x, y))
+
+#wildcard_constraints:
+ #   f1 = '|'.join([re.escape(x) for x in config["samples"]]),
+  #  f2 = [x for x in fin2],
+
+#rule all:
+ #   input:
+  #      outfiles,
+#######################################################################################
+#rule all for the first + second block
+
+#fin3 = ['_S1_L001_I1_001', '_S1_L001_R1_001', '_S1_L001_R2_001']
+
+#outfiles = []
+#for x in config["samples"]:
+    #for y in fin3:
+        ## Here you pair f1 and f2. This is a very trivial way of doing it:
+       # if y[1] in x:
+         #   outfiles.append(config["data"]+ 'fastq_snakemake/%s%s.fastq' % (x, y))
+
+#wildcard_constraints:
+   # f1 = '|'.join([re.escape(x) for x in config["samples"]]),
+   # f2 = [x for x in fin3],
+
+#rule all:
+   # input:
+     #   outfiles,
+
+#######################################################################################
+#rule all for the first, second and third block
+
+fin3 = ['features.tsv','matrix.mtx','barcodes.tsv']
+
+outfiles = []
+for x in config["samples"]:
+    for y in fin3:
+        ## Here you pair f1 and f2. This is a very trivial way of doing it:
+        outfiles.append(config["cellrangerpath"]+ 'cellranger-6.0.1/scRNA%s/outs/filtered_feature_bc_matrix/%s.gz' % (x, y))
+        #if y[1] in x:
+            #print(y)
+            #outfiles.append(config["cellrangerpath"]+ 'cellranger-6.0.1/scRNA%s/outs/filtered_feature_bc_matrix/%s.gz' % (x, y))
+print(outfiles)
+
+wildcard_constraints:
+    f1 = '|'.join([re.escape(x) for x in config["samples"]]),
+    f2 = [x for x in fin3],
+
+#print('|'.join([re.escape(x) for x in config["samples"]]))
+#print([x for x in fin3])
+rule all:
+    input:
+        outfiles,
+
+#######################################################################################
+
+rule cellranger_scrna: 
+    input:
+        config["data"]+ 'fastq_snakemake/{f1}_S1_L001_I1_001.fastq',
+        config["data"]+ 'fastq_snakemake/{f1}_S1_L001_R1_001.fastq',
+        config["data"]+ 'fastq_snakemake/{f1}_S1_L001_R2_001.fastq',
+
+    output:
+        config["cellrangerpath"]+ 'cellranger-6.0.1/scRNA{f1}/outs/filtered_feature_bc_matrix/features.tsv.gz',
+        config["cellrangerpath"]+ 'cellranger-6.0.1/scRNA{f1}/outs/filtered_feature_bc_matrix/matrix.mtx.gz',
+        config["cellrangerpath"]+ 'cellranger-6.0.1/scRNA{f1}/outs/filtered_feature_bc_matrix/barcodes.tsv.gz',
+        #outfiles,
+
+    params:
+        outputs1 = config["cellrangerpath"]+ "cellranger-6.0.1",
+        outputs2 = config["cellrangerpath"]+ "refdata-gex-GRCh38-2020-A",
+        outputs3 = config["data"]+ "fastq_snakemake",
+
+    shell:
+        """
+        export PATH={params.outputs1}:$PATH
+        cellranger count --id={wildcards.f1} --transcriptome={params.outputs2} --fastqs={params.outputs3} --sample={wildcards.f1} --localmem=100 --noexit
+        """
